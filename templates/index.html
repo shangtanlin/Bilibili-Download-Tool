@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>哔哩哔哩视频/音频下载</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="{{ url_for('static', filename='favicon.svg') }}"
+    />
+  </head>
+  <body>
+    <main class="container">
+      <h1>哔哩哔哩视频 / 音频下载器</h1>
+      <p class="lead">
+        输入任意哔哩哔哩视频链接，选择想要的格式，即可开始下载。
+      </p>
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="{{ url_for('download') }}">
+        <label for="url">视频链接</label>
+        <input
+          type="url"
+          name="url"
+          id="url"
+          placeholder="https://www.bilibili.com/video/..."
+          required
+        />
+        <label for="filename">自定义文件名（可选）</label>
+        <input
+          type="text"
+          name="filename"
+          id="filename"
+          placeholder="不含扩展名，例如 我的收藏"
+          maxlength="80"
+        />
+
+        <fieldset>
+          <legend>输出格式</legend>
+          <label class="radio">
+            <input type="radio" name="format" value="video" checked />
+            MP4 视频
+          </label>
+          <label class="radio">
+            <input type="radio" name="format" value="audio" />
+            MP3 音频
+          </label>
+        </fieldset>
+
+        <button type="submit">开始下载</button>
+      </form>
+
+      <section class="tips">
+        <h2>使用提示</h2>
+        <ul>
+          <li>下载过程可能需要数秒到一两分钟，文件会自动开始下载。</li>
+          <!-- <li>转换 MP3 需要本机安装 ffmpeg，若失败请先安装再试。</li> -->
+          <li>仅用于个人学习研究，请遵守哔哩哔哩用户协议。</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>
